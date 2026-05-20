@@ -13,11 +13,6 @@ const CATEGORIES = [
         note: "Wash & blowdry not included.",
       },
       {
-        name: "Style Cut",
-        desc: "A full cut shaped to suit your face and lifestyle.",
-        prices: { Short: 325, Medium: 325, Long: 325, "Extra Long": 325 },
-      },
-      {
         name: "Blowdry",
         desc: "Wash, blow and style. Smooth, polished, ready to go.",
         prices: { Short: 290, Medium: 295, Long: 320, "Extra Long": 450 },
@@ -31,18 +26,6 @@ const CATEGORIES = [
         name: "Cut, Blowdry & Flat Iron",
         desc: "Cut, wash, blow — finished sleek and straight.",
         prices: { Short: 460, Medium: 530, Long: 580, "Extra Long": 640 },
-      },
-      {
-        name: "Adding Curls",
-        desc: "Wave or curl styling added to your blowdry finish.",
-        prices: { Short: 180, Medium: 180, Long: 180, "Extra Long": 180 },
-        note: "Add-on service.",
-      },
-      {
-        name: "Flat Iron Only",
-        desc: "Straightening finish on dry hair.",
-        prices: { Short: 150, Medium: 150, Long: 150, "Extra Long": 150 },
-        note: "Wash & blowdry not included.",
       },
     ],
   },
@@ -199,21 +182,37 @@ const CATEGORIES = [
     ],
   },
   {
-    name: "Treatments",
+    name: "Add to Your Service",
+    addons: true,
     services: [
       {
+        name: "Add a Cut",
+        desc: "Only needed if your main service does not already include a cut.",
+        prices: { Short: 325, Medium: 325, Long: 325, "Extra Long": 325 },
+      },
+      {
+        name: "Add a Flat Iron Finish",
+        desc: "Sleek, straight finish added to any blowdry.",
+        prices: { Short: 150, Medium: 150, Long: 150, "Extra Long": 150 },
+      },
+      {
+        name: "Add Curls / Beach Waves",
+        desc: "Wave or curl styling added to any blowdry finish.",
+        prices: { Short: 180, Medium: 180, Long: 180, "Extra Long": 180 },
+      },
+      {
         name: "Argan Moisture Treatment",
-        desc: "Intense moisture boost with Argan oil. Restores softness and shine.",
+        desc: "Intense moisture boost with Argan oil. Pair with any wash service.",
         prices: { Short: 250, Medium: 250, Long: 250, "Extra Long": 250 },
       },
       {
         name: "Matrix 1 Min Moisture Treatment",
-        desc: "Quick moisture treatment added to any service. Immediate softness.",
+        desc: "Quick moisture hit. Added to any service.",
         prices: { Short: 210, Medium: 210, Long: 210, "Extra Long": 210 },
       },
       {
         name: "Dikson Nourishing Treatment",
-        desc: "Nourishing and moisturising treatment for hair that needs rebuilding.",
+        desc: "Deep nourishment for dry or damaged hair. Pair with any wash service.",
         prices: { Short: 240, Medium: 240, Long: 240, "Extra Long": 240 },
       },
     ],
@@ -279,10 +278,12 @@ export default function App() {
         .cat-header:hover { background: #F3EDE4; }
         .cat-header.open { background: #F3EDE4; }
         .cat-name { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #2C2416; font-family: 'Poppins', sans-serif; font-weight: 500; }
+        .cat-name.addon { color: #C4A882; }
         .cat-chevron { color: #C4A882; font-size: 16px; transition: transform 0.2s; }
         .cat-chevron.open { transform: rotate(180deg); }
 
         .services { background: #FDFAF6; border-bottom: 1px solid #E8E0D5; }
+        .services.addon { background: #FAF6EE; }
         .service-item { padding: 14px 20px; border-bottom: 1px solid #EDE7DC; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background 0.15s; }
         .service-item:last-child { border-bottom: none; }
         .service-item:hover { background: #F8F4EE; }
@@ -302,8 +303,10 @@ export default function App() {
         .service-desc { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: #7A6A55; margin-top: 5px; line-height: 1.5; }
         .service-note { font-family: 'Poppins', sans-serif; font-size: 10px; color: #A0906A; margin-top: 4px; }
 
+        .not-found { padding: 16px 20px; text-align: center; font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: #8A7A65; border-bottom: 1px solid #E8E0D5; line-height: 1.6; }
+
         .floating-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #FAF8F4; border-top: 1px solid #E8E0D5; padding: 12px 20px 20px; z-index: 100; }
-        .estimate-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .estimate-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .estimate-label { font-family: 'Poppins', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #8A7A65; }
         .estimate-total { font-family: 'Lora', serif; font-size: 22px; color: #2C2416; font-weight: 600; }
         .estimate-disclaimer { font-family: 'Lora', serif; font-style: italic; font-size: 11px; color: #8A7A65; margin-bottom: 10px; }
@@ -315,14 +318,12 @@ export default function App() {
         .address { text-align: center; font-family: 'Poppins', sans-serif; font-size: 10px; letter-spacing: 1px; color: #A0906A; padding: 6px 20px 24px; line-height: 1.8; }
       `}</style>
 
-      {/* Header */}
       <div className="header">
         <div className="logo">OAYSSIS</div>
         <div className="tagline">Hair & Beauty Bar</div>
         <div className="subtitle">Services & Pricing 2026</div>
       </div>
 
-      {/* Size Selector */}
       <div className="size-section">
         <div className="size-label">Select your hair length</div>
         <div className="size-buttons">
@@ -335,25 +336,23 @@ export default function App() {
         <div className="size-note">Prices shown are for {selectedSize.toLowerCase()} hair.</div>
       </div>
 
-      {/* Estimate intro */}
       <div className="estimate-intro">
         <div className="estimate-intro-text">
           Tick the services you are thinking about and we will put together a rough estimate for you. Final pricing is confirmed when we chat — every head of hair is different.
         </div>
       </div>
 
-      {/* Categories */}
       <div>
         {CATEGORIES.map((cat) => {
           const isOpen = openCat === cat.name;
           return (
             <div key={cat.name}>
               <div className={`cat-header${isOpen ? " open" : ""}`} onClick={() => setOpenCat(isOpen ? null : cat.name)}>
-                <span className="cat-name">{cat.name}</span>
+                <span className={`cat-name${cat.addons ? " addon" : ""}`}>{cat.name}</span>
                 <span className={`cat-chevron${isOpen ? " open" : ""}`}>&#8964;</span>
               </div>
               {isOpen && (
-                <div className="services">
+                <div className={`services${cat.addons ? " addon" : ""}`}>
                   {cat.services.map((svc) => {
                     const key = `${cat.name}__${svc.name}`;
                     const isChecked = !!selected[key];
@@ -383,7 +382,11 @@ export default function App() {
         })}
       </div>
 
-      {/* Bottom notes */}
+      <div className="not-found">
+        Don't see what you're looking for?<br />
+        WhatsApp us and we'll help you find the right service.
+      </div>
+
       <div className="bottom-note">
         All full services include wash & blowdry.<br />
         Not sure what your hair needs? Just ask us.
@@ -395,7 +398,6 @@ export default function App() {
         </a>
       </div>
 
-      {/* Floating estimate bar */}
       <div className="floating-bar">
         {hasSelected ? (
           <>
