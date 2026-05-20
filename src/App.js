@@ -234,10 +234,9 @@ export default function App() {
 
 const waMessage = hasSelected
   ? isAndroid
-    ? `Hi Oayssis, I used the price estimator and would like to discuss my visit.%0A%0AHair length: ${selectedSize}%0AServices:%0A${selectedItems.map((s) => `- ${s.name}: ${formatPrice(s.prices[selectedSize])}`).join("%0A")}%0A%0AEstimated total: ${formatPrice(total)}%0A%0ALooking forward to chatting.`
-    : `Hi Oayssis, I used the price estimator.%0A%0ALength: ${selectedSize}%0AEstimate: ${formatPrice(total)}%0AServices: ${selectedItems.map((s) => s.name).join(", ")}%0A%0ALooking forward to chatting.`
+    ? `Hi Oayssis, I used the price estimator.%0A%0ALength: ${selectedSize}%0AEstimate: ${formatPrice(total)}%0AServices: ${selectedItems.map((s) => s.name).join(", ")}%0A%0ALooking forward to chatting.`
+    : `Hi Oayssis, I used the price estimator and would like to discuss my visit.%0A%0AHair length: ${selectedSize}%0AServices:%0A${selectedItems.map((s) => `- ${s.name}: ${formatPrice(s.prices[selectedSize])}`).join("%0A")}%0A%0AEstimated total: ${formatPrice(total)}%0A%0ALooking forward to chatting.`
   : `Hi, I'd like to book an appointment at Oayssis.`;
-
 
   const toggleService = (key) => {
     setSelected((prev) => ({ ...prev, [key]: !prev[key] }));
