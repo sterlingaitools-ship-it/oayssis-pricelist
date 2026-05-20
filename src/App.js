@@ -61,7 +61,7 @@ const CATEGORIES = [
       },
       {
         name: "Semi Colour & Blowdry",
-        desc: "A semi-permanent colour for tone, shine and refresh — no harsh commitment.",
+        desc: "A semi-permanent colour for tone, shine and refresh.",
         prices: { Short: 940, Medium: 1075, Long: 1210, "Extra Long": 1340 },
       },
       {
@@ -228,361 +228,194 @@ const formatPrice = (price) => {
 export default function App() {
   const [selectedSize, setSelectedSize] = useState("Medium");
   const [openCat, setOpenCat] = useState(null);
+  const [selected, setSelected] = useState({});
 
-  const waLink = `https://wa.me/27717316424?text=Hi%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Oayssis.`;
+  const waBase = `https://wa.me/27717316424?text=`;
+
+  const toggleService = (key) => {
+    setSelected((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const selectedItems = CATEGORIES.flatMap((cat) =>
+    cat.services
+      .filter((svc) => selected[`${cat.name}__${svc.name}`])
+      .map((svc) => ({ ...svc, cat: cat.name }))
+  );
+
+  const total = selectedItems.reduce((sum, svc) => {
+    const p = svc.prices[selectedSize];
+    return sum + (p || 0);
+  }, 0);
+
+  const hasSelected = selectedItems.length > 0;
+
+  const waMessage = hasSelected
+    ? `Hi Oayssis, I used the price estimator and would like to discuss my visit.%0A%0AHair length: ${selectedSize}%0AServices:%0A${selectedItems.map((s) => `- ${s.name}: ${formatPrice(s.prices[selectedSize])}`).join("%0A")}%0A%0AEstimated total: ${formatPrice(total)}%0A%0ALooking forward to chatting.`
+    : `Hi, I'd like to book an appointment at Oayssis.`;
 
   return (
-    <div style={{
-      fontFamily: "'Georgia', 'Times New Roman', serif",
-      background: "#FAF8F4",
-      minHeight: "100vh",
-      color: "#2C2416",
-      maxWidth: 480,
-      margin: "0 auto",
-      paddingBottom: 100,
-    }}>
-      {/* Google Fonts */}
+    <div style={{ fontFamily: "'Georgia', serif", background: "#FAF8F4", minHeight: "100vh", color: "#2C2416", maxWidth: 480, margin: "0 auto", paddingBottom: hasSelected ? 160 : 100 }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap');
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body { background: #FAF8F4; }
+        .header { background: #2C2416; padding: 40px 24px 28px; text-align: center; }
+        .header::after { content: ''; display: block; height: 1px; background: #C4A882; margin: 18px auto 0; width: 60%; }
+        .logo { font-family: 'Lora', serif; font-size: 38px; font-weight: 600; color: #C4A882; letter-spacing: 4px; }
+        .tagline { font-family: 'Lora', serif; font-style: italic; font-size: 15px; color: #FAF8F4; margin-top: 6px; opacity: 0.85; }
+        .subtitle { font-family: 'Poppins', sans-serif; font-size: 10px; letter-spacing: 3px; color: #C4A882; margin-top: 12px; opacity: 0.7; text-transform: uppercase; }
 
-        .app { font-family: 'Poppins', sans-serif; }
+        .size-section { padding: 22px 20px 14px; background: #FAF8F4; border-bottom: 1px solid #E8E0D5; }
+        .size-label { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #8A7A65; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
+        .size-buttons { display: flex; gap: 8px; }
+        .size-btn { flex: 1; padding: 10px 4px; border: 1px solid #C4A882; background: transparent; color: #6A5A45; font-family: 'Poppins', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.2s; border-radius: 2px; }
+        .size-btn.active { background: #2C2416; color: #C4A882; border-color: #2C2416; font-weight: 500; }
+        .size-note { font-size: 11px; color: #8A7A65; margin-top: 10px; font-family: 'Lora', serif; font-style: italic; }
 
-        .header {
-          background: #2C2416;
-          padding: 40px 24px 32px;
-          text-align: center;
-          position: relative;
-        }
-        .header::after {
-          content: '';
-          display: block;
-          height: 1px;
-          background: #C4A882;
-          margin: 20px auto 0;
-          width: 60%;
-        }
+        .estimate-intro { background: #F3EDE4; border-bottom: 1px solid #E8E0D5; padding: 14px 20px; }
+        .estimate-intro-text { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: #6A5A45; line-height: 1.6; }
 
-        .logo {
-          font-family: 'Lora', serif;
-          font-size: 38px;
-          font-weight: 600;
-          color: #C4A882;
-          letter-spacing: 4px;
-        }
-        .tagline {
-          font-family: 'Lora', serif;
-          font-style: italic;
-          font-size: 15px;
-          color: #FAF8F4;
-          margin-top: 6px;
-          opacity: 0.85;
-        }
-        .subtitle {
-          font-family: 'Poppins', sans-serif;
-          font-size: 10px;
-          letter-spacing: 3px;
-          color: #C4A882;
-          margin-top: 14px;
-          opacity: 0.7;
-          text-transform: uppercase;
-        }
-
-        .size-section {
-          padding: 24px 20px 16px;
-          background: #FAF8F4;
-          border-bottom: 1px solid #E8E0D5;
-        }
-        .size-label {
-          font-size: 10px;
-          letter-spacing: 2.5px;
-          text-transform: uppercase;
-          color: #8A7A65;
-          margin-bottom: 12px;
-          font-family: 'Poppins', sans-serif;
-        }
-        .size-buttons {
-          display: flex;
-          gap: 8px;
-        }
-        .size-btn {
-          flex: 1;
-          padding: 10px 4px;
-          border: 1px solid #C4A882;
-          background: transparent;
-          color: #6A5A45;
-          font-family: 'Poppins', sans-serif;
-          font-size: 12px;
-          font-weight: 400;
-          cursor: pointer;
-          transition: all 0.2s;
-          border-radius: 2px;
-          letter-spacing: 0.5px;
-        }
-        .size-btn.active {
-          background: #2C2416;
-          color: #C4A882;
-          border-color: #2C2416;
-          font-weight: 500;
-        }
-
-        .size-note {
-          font-size: 11px;
-          color: #8A7A65;
-          margin-top: 10px;
-          font-family: 'Lora', serif;
-          font-style: italic;
-        }
-
-        .categories { padding: 8px 0; }
-
-        .cat-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 16px 20px;
-          cursor: pointer;
-          border-bottom: 1px solid #E8E0D5;
-          background: #FAF8F4;
-          transition: background 0.15s;
-        }
+        .cat-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #E8E0D5; background: #FAF8F4; transition: background 0.15s; }
         .cat-header:hover { background: #F3EDE4; }
         .cat-header.open { background: #F3EDE4; }
-
-        .cat-name {
-          font-size: 10px;
-          letter-spacing: 2.5px;
-          text-transform: uppercase;
-          color: #2C2416;
-          font-family: 'Poppins', sans-serif;
-          font-weight: 500;
-        }
-        .cat-chevron {
-          color: #C4A882;
-          font-size: 16px;
-          transition: transform 0.2s;
-          font-style: normal;
-        }
+        .cat-name { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #2C2416; font-family: 'Poppins', sans-serif; font-weight: 500; }
+        .cat-chevron { color: #C4A882; font-size: 16px; transition: transform 0.2s; }
         .cat-chevron.open { transform: rotate(180deg); }
 
-        .services {
-          background: #FDFAF6;
-          border-bottom: 1px solid #E8E0D5;
-        }
-
-        .service-item {
-          padding: 16px 20px;
-          border-bottom: 1px solid #EDE7DC;
-        }
+        .services { background: #FDFAF6; border-bottom: 1px solid #E8E0D5; }
+        .service-item { padding: 14px 20px; border-bottom: 1px solid #EDE7DC; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background 0.15s; }
         .service-item:last-child { border-bottom: none; }
+        .service-item:hover { background: #F8F4EE; }
+        .service-item.checked { background: #F3EDE4; }
 
-        .service-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          gap: 12px;
-        }
-        .service-name {
-          font-family: 'Lora', serif;
-          font-size: 17px;
-          color: #2C2416;
-          line-height: 1.3;
-          flex: 1;
-        }
-        .service-name.highlight { color: #2C2416; }
+        .checkbox { width: 20px; height: 20px; border: 1px solid #C4A882; border-radius: 2px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+        .checkbox.checked { background: #2C2416; border-color: #2C2416; }
+        .checkmark { color: #C4A882; font-size: 12px; }
 
-        .service-price {
-          font-family: 'Poppins', sans-serif;
-          font-size: 15px;
-          font-weight: 500;
-          color: #C4A882;
-          white-space: nowrap;
-          padding-top: 2px;
-        }
+        .highlight-bar { width: 2px; background: #C4A882; border-radius: 2px; align-self: stretch; min-height: 20px; flex-shrink: 0; }
+
+        .service-content { flex: 1; }
+        .service-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+        .service-name { font-family: 'Lora', serif; font-size: 17px; color: #2C2416; line-height: 1.3; flex: 1; }
+        .service-price { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 500; color: #C4A882; white-space: nowrap; padding-top: 2px; }
         .service-price.ask { color: #8A7A65; font-size: 13px; }
+        .service-desc { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: #7A6A55; margin-top: 5px; line-height: 1.5; }
+        .service-note { font-family: 'Poppins', sans-serif; font-size: 10px; color: #A0906A; margin-top: 4px; }
 
-        .service-desc {
-          font-family: 'Lora', serif;
-          font-style: italic;
-          font-size: 13px;
-          color: #7A6A55;
-          margin-top: 6px;
-          line-height: 1.5;
-        }
-        .service-note {
-          font-family: 'Poppins', sans-serif;
-          font-size: 10px;
-          color: #A0906A;
-          margin-top: 5px;
-          letter-spacing: 0.5px;
-        }
-        .highlight-bar {
-          width: 2px;
-          background: #C4A882;
-          border-radius: 2px;
-          margin-right: 12px;
-          align-self: stretch;
-          min-height: 20px;
-          flex-shrink: 0;
-        }
-        .service-inner {
-          display: flex;
-          align-items: flex-start;
-        }
+        .floating-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #FAF8F4; border-top: 1px solid #E8E0D5; padding: 12px 20px 20px; z-index: 100; }
+        .estimate-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .estimate-label { font-family: 'Poppins', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #8A7A65; }
+        .estimate-total { font-family: 'Lora', serif; font-size: 22px; color: #2C2416; font-weight: 600; }
+        .estimate-disclaimer { font-family: 'Lora', serif; font-style: italic; font-size: 11px; color: #8A7A65; margin-bottom: 10px; }
+        .cta-btn { display: block; width: 100%; background: #2C2416; color: #C4A882; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; text-align: center; padding: 14px; text-decoration: none; border-radius: 2px; border: 1px solid #C4A882; cursor: pointer; transition: all 0.2s; }
+        .cta-btn:hover { background: #C4A882; color: #2C2416; }
+        .cta-btn.default { background: transparent; color: #6A5A45; border-color: #C4A882; }
 
-        .footer-cta {
-          position: fixed;
-          bottom: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 100%;
-          max-width: 480px;
-          background: #FAF8F4;
-          border-top: 1px solid #E8E0D5;
-          padding: 14px 20px 20px;
-        }
-        .cta-note {
-          font-family: 'Lora', serif;
-          font-style: italic;
-          font-size: 12px;
-          color: #8A7A65;
-          text-align: center;
-          margin-bottom: 10px;
-        }
-        .cta-btn {
-          display: block;
-          width: 100%;
-          background: #2C2416;
-          color: #C4A882;
-          font-family: 'Poppins', sans-serif;
-          font-size: 12px;
-          font-weight: 500;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          text-align: center;
-          padding: 14px;
-          text-decoration: none;
-          border-radius: 2px;
-          border: 1px solid #C4A882;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .cta-btn:hover {
-          background: #C4A882;
-          color: #2C2416;
-        }
-
-        .bottom-note {
-          text-align: center;
-          padding: 32px 20px 16px;
-          font-family: 'Lora', serif;
-          font-style: italic;
-          font-size: 12px;
-          color: #8A7A65;
-          line-height: 1.7;
-        }
-        .address {
-          text-align: center;
-          font-family: 'Poppins', sans-serif;
-          font-size: 10px;
-          letter-spacing: 1px;
-          color: #A0906A;
-          padding-bottom: 20px;
-        }
+        .bottom-note { text-align: center; padding: 28px 20px 10px; font-family: 'Lora', serif; font-style: italic; font-size: 12px; color: #8A7A65; line-height: 1.7; }
+        .address { text-align: center; font-family: 'Poppins', sans-serif; font-size: 10px; letter-spacing: 1px; color: #A0906A; padding: 6px 20px 24px; line-height: 1.8; }
       `}</style>
 
-      <div className="app">
-        {/* Header */}
-        <div className="header">
-          <div className="logo">OAYSSIS</div>
-          <div className="tagline">Hair & Beauty Bar</div>
-          <div className="subtitle">Services & Pricing 2026</div>
+      {/* Header */}
+      <div className="header">
+        <div className="logo">OAYSSIS</div>
+        <div className="tagline">Hair & Beauty Bar</div>
+        <div className="subtitle">Services & Pricing 2026</div>
+      </div>
+
+      {/* Size Selector */}
+      <div className="size-section">
+        <div className="size-label">Select your hair length</div>
+        <div className="size-buttons">
+          {SIZES.map((s) => (
+            <button key={s} className={`size-btn${selectedSize === s ? " active" : ""}`} onClick={() => { setSelectedSize(s); setSelected({}); }}>
+              {s}
+            </button>
+          ))}
         </div>
+        <div className="size-note">Prices shown are for {selectedSize.toLowerCase()} hair.</div>
+      </div>
 
-        {/* Size Selector */}
-        <div className="size-section">
-          <div className="size-label">Select your hair length</div>
-          <div className="size-buttons">
-            {SIZES.map((s) => (
-              <button
-                key={s}
-                className={`size-btn${selectedSize === s ? " active" : ""}`}
-                onClick={() => setSelectedSize(s)}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-          <div className="size-note">
-            Prices shown are for {selectedSize.toLowerCase()} hair.
-          </div>
+      {/* Estimate intro */}
+      <div className="estimate-intro">
+        <div className="estimate-intro-text">
+          Tick the services you are thinking about and we will put together a rough estimate for you. Final pricing is confirmed when we chat — every head of hair is different.
         </div>
+      </div>
 
-        {/* Categories */}
-        <div className="categories">
-          {CATEGORIES.map((cat) => {
-            const isOpen = openCat === cat.name;
-            return (
-              <div key={cat.name}>
-                <div
-                  className={`cat-header${isOpen ? " open" : ""}`}
-                  onClick={() => setOpenCat(isOpen ? null : cat.name)}
-                >
-                  <span className="cat-name">{cat.name}</span>
-                  <span className={`cat-chevron${isOpen ? " open" : ""}`}>&#8964;</span>
-                </div>
-
-                {isOpen && (
-                  <div className="services">
-                    {cat.services.map((svc) => {
-                      const price = svc.prices[selectedSize];
-                      const isAsk = price === null;
-                      return (
-                        <div className="service-item" key={svc.name}>
-                          <div className="service-inner">
-                            {svc.highlight && <div className="highlight-bar" />}
-                            <div style={{ flex: 1 }}>
-                              <div className="service-top">
-                                <div className={`service-name${svc.highlight ? " highlight" : ""}`}>
-                                  {svc.name}
-                                </div>
-                                <div className={`service-price${isAsk ? " ask" : ""}`}>
-                                  {formatPrice(price)}
-                                </div>
-                              </div>
-                              <div className="service-desc">{svc.desc}</div>
-                              {svc.note && <div className="service-note">{svc.note}</div>}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
+      {/* Categories */}
+      <div>
+        {CATEGORIES.map((cat) => {
+          const isOpen = openCat === cat.name;
+          return (
+            <div key={cat.name}>
+              <div className={`cat-header${isOpen ? " open" : ""}`} onClick={() => setOpenCat(isOpen ? null : cat.name)}>
+                <span className="cat-name">{cat.name}</span>
+                <span className={`cat-chevron${isOpen ? " open" : ""}`}>&#8964;</span>
               </div>
-            );
-          })}
-        </div>
+              {isOpen && (
+                <div className="services">
+                  {cat.services.map((svc) => {
+                    const key = `${cat.name}__${svc.name}`;
+                    const isChecked = !!selected[key];
+                    const price = svc.prices[selectedSize];
+                    const isAsk = price === null;
+                    return (
+                      <div key={svc.name} className={`service-item${isChecked ? " checked" : ""}`} onClick={() => !isAsk && toggleService(key)}>
+                        <div className={`checkbox${isChecked ? " checked" : ""}`}>
+                          {isChecked && <span className="checkmark">&#10003;</span>}
+                        </div>
+                        {svc.highlight && <div className="highlight-bar" />}
+                        <div className="service-content">
+                          <div className="service-top">
+                            <div className="service-name">{svc.name}</div>
+                            <div className={`service-price${isAsk ? " ask" : ""}`}>{formatPrice(price)}</div>
+                          </div>
+                          <div className="service-desc">{svc.desc}</div>
+                          {svc.note && <div className="service-note">{svc.note}</div>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-        {/* Bottom notes */}
-        <div className="bottom-note">
-          All full services include wash & blowdry.<br />
-          Not sure what your hair needs? Just ask us.
-        </div>
-        <div className="address">
-          Unit 113, Riverside Lofts, Tyger Falls Blvd, Bellville
-        </div>
+      {/* Bottom notes */}
+      <div className="bottom-note">
+        All full services include wash & blowdry.<br />
+        Not sure what your hair needs? Just ask us.
+      </div>
+      <div className="address">
+        Unit 113, Riverside Lofts, Tyger Falls Blvd, Bellville<br />
+        <a href="https://oayssis.co.za" target="_blank" rel="noreferrer" style={{ color: "#C4A882", textDecoration: "none", letterSpacing: "1px" }}>
+          oayssis.co.za
+        </a>
+      </div>
 
-        {/* Sticky CTA */}
-        <div className="footer-cta">
-          <div className="cta-note">Not sure which service is right for you?</div>
-          <a className="cta-btn" href={waLink} target="_blank" rel="noreferrer">
-            WhatsApp Us to Book
-          </a>
-        </div>
+      {/* Floating estimate bar */}
+      <div className="floating-bar">
+        {hasSelected ? (
+          <>
+            <div className="estimate-row">
+              <span className="estimate-label">Your estimate ({selectedItems.length} service{selectedItems.length > 1 ? "s" : ""})</span>
+              <span className="estimate-total">{formatPrice(total)}</span>
+            </div>
+            <div className="estimate-disclaimer">Final price confirmed by your stylist. Every head of hair is unique.</div>
+            <a className="cta-btn" href={waBase + waMessage} target="_blank" rel="noreferrer">
+              Discuss my estimate on WhatsApp
+            </a>
+          </>
+        ) : (
+          <>
+            <div className="estimate-disclaimer" style={{ marginBottom: 10 }}>Tick services above to build your estimate.</div>
+            <a className="cta-btn default" href={waBase + waMessage} target="_blank" rel="noreferrer">
+              WhatsApp Us to Book
+            </a>
+          </>
+        )}
       </div>
     </div>
   );
