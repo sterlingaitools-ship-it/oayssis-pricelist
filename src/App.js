@@ -230,7 +230,13 @@ export default function App() {
   const [selected, setSelected] = useState({});
 
   const waBase = `https://wa.me/27717316424?text=`;
-  const isAndroid = /Android/.test(navigator.userAgent);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  const waMessage = hasSelected
+  ? isIOS
+    ? `Hi Oayssis, I used the price estimator.%0A%0ALength: ${selectedSize}%0AEstimate: ${formatPrice(total)}%0AServices: ${selectedItems.map((s) => s.name).join(", ")}%0A%0ALooking forward to chatting.`
+    : `Hi Oayssis, I used the price estimator and would like to discuss my visit.%0A%0AHair length: ${selectedSize}%0AServices:%0A${selectedItems.map((s) => `- ${s.name}: ${formatPrice(s.prices[selectedSize])}`).join("%0A")}%0A%0AEstimated total: ${formatPrice(total)}%0A%0ALooking forward to chatting.`
+  : `Hi, I'd like to book an appointment at Oayssis.`;
 
 const waMessage = hasSelected
   ? isAndroid
