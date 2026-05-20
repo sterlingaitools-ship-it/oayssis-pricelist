@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const SIZES = ["Short", "Medium", "Long", "Extra Long"];
-const SIZE_LABELS = { Short: "S", Medium: "M", Long: "L", "Extra Long": "XL" };
 
 const CATEGORIES = [
   {
