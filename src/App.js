@@ -18,12 +18,12 @@ const CATEGORIES = [
         prices: { Short: 290, Medium: 295, Long: 320, "Extra Long": 450 },
       },
       {
-        name: "Ladies Cut & Blowdry",
+        name: "Ladies Cut and Blowdry",
         desc: "Full cut plus wash, blow and style. The complete visit.",
         prices: { Short: 410, Medium: 540, Long: 560, "Extra Long": 600 },
       },
       {
-        name: "Cut, Blowdry & Flat Iron",
+        name: "Cut, Blowdry and Flat Iron",
         desc: "Cut, wash, blow — finished sleek and straight.",
         prices: { Short: 460, Medium: 530, Long: 580, "Extra Long": 640 },
       },
@@ -38,12 +38,12 @@ const CATEGORIES = [
         prices: { Short: 640, Medium: 640, Long: 640, "Extra Long": 640 },
       },
       {
-        name: "Root Colour & Blowdry",
+        name: "Root Colour an Blowdry",
         desc: "Root application plus a full wash, blow and style finish.",
         prices: { Short: 910, Medium: 1040, Long: 1180, "Extra Long": 1310 },
       },
       {
-        name: "Semi Colour & Blowdry",
+        name: "Semi Colour and Blowdry",
         desc: "A semi-permanent colour for tone, shine and refresh.",
         prices: { Short: 940, Medium: 1075, Long: 1210, "Extra Long": 1340 },
       },
@@ -53,7 +53,7 @@ const CATEGORIES = [
         prices: { Short: 640, Medium: 770, Long: 950, "Extra Long": 1080 },
       },
       {
-        name: "Toner & Blowdry",
+        name: "Toner and Blowdry",
         desc: "Toner to neutralise unwanted warmth or brassiness, plus a blowdry finish.",
         prices: { Short: 510, Medium: 645, Long: 780, "Extra Long": 910 },
       },
@@ -65,7 +65,7 @@ const CATEGORIES = [
     ],
   },
   {
-    name: "Highlights & Balayage",
+    name: "Highlights and Balayage",
     services: [
       {
         name: "Half Head Bleach",
@@ -78,39 +78,39 @@ const CATEGORIES = [
         prices: { Short: 1150, Medium: 1205, Long: 1510, "Extra Long": 1790 },
       },
       {
-        name: "Bleach & Tone",
+        name: "Bleach and Tone",
         desc: "Bleach highlights finished with a toner for a seamless, polished result.",
         prices: { Short: 1200, Medium: 1335, Long: 1480, "Extra Long": null },
       },
       {
-        name: "Bleach, Tone & Blowdry",
+        name: "Bleach, Tone and Blowdry",
         desc: "The full highlight service — bleach, tone and a blowdry finish.",
         prices: { Short: 1475, Medium: 1610, Long: 1755, "Extra Long": null },
       },
       {
-        name: "Bleach, Tone, Cut & Blowdry",
+        name: "Bleach, Tone, Cut and Blowdry",
         desc: "Complete transformation — highlights, tone, cut and styled finish.",
         prices: { Short: 1735, Medium: 1870, Long: 2020, "Extra Long": null },
       },
       {
-        name: "1 Colour Balayage & Blowdry",
+        name: "1 Colour Balayage and Blowdry",
         desc: "Hand-painted balayage in one shade for a natural, grown-out effect.",
         prices: { Short: 1490, Medium: 1755, Long: 2035, "Extra Long": 2305 },
       },
       {
-        name: "2 Colour Balayage & Blowdry",
+        name: "2 Colour Balayage and Blowdry",
         desc: "Two-tone hand-painted balayage for depth and dimension.",
         prices: { Short: 1800, Medium: 2065, Long: 2340, "Extra Long": 2615 },
       },
       {
-        name: "Gents Highlights & Cut",
+        name: "Gents Highlights and Cut",
         desc: "Highlights and a cut for gents. Clean, natural finish.",
         prices: { Short: 730, Medium: 730, Long: 730, "Extra Long": 730 },
       },
     ],
   },
   {
-    name: "Brazilians & Keratin",
+    name: "Brazilians and Keratin",
     services: [
       {
         name: "72 Keratin Brazilian",
