@@ -231,7 +231,6 @@ export default function App() {
   const [openCat, setOpenCat] = useState(null);
   const [selected, setSelected] = useState({});
 
-<<<<<<< HEAD
   const hasSelected = selectedItems.length > 0;
   
   const waBase = `https://wa.me/27717316424?text=`;
@@ -241,9 +240,6 @@ export default function App() {
     : `Hi, I'd like to book an appointment at Oayssis.`;
     
    const selectedItems = CATEGORIES.flatMap((cat) =>
-=======
-  const selectedItems = CATEGORIES.flatMap((cat) =>
->>>>>>> a4bc8e4ff582b8dc400393ede1d969145572db28
     cat.services
       .filter((svc) => selected[`${cat.name}__${svc.name}`])
       .map((svc) => ({ ...svc, cat: cat.name }))
@@ -254,11 +250,6 @@ export default function App() {
     return sum + (p || 0);
   }, 0);
 
-<<<<<<< HEAD
-=======
-  const hasSelected = selectedItems.length > 0;
-
->>>>>>> a4bc8e4ff582b8dc400393ede1d969145572db28
   const toggleService = (key) => {
     setSelected((prev) => ({ ...prev, [key]: !prev[key] }));
   };
