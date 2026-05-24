@@ -38,7 +38,7 @@ const CATEGORIES = [
         prices: { Short: 640, Medium: 640, Long: 640, "Extra Long": 640 },
       },
       {
-        name: "Root Colour an Blowdry",
+        name: "Root Colour and Blowdry",
         desc: "Root application plus a full wash, blow and style finish.",
         prices: { Short: 910, Medium: 1040, Long: 1180, "Extra Long": 1310 },
       },
