@@ -4,13 +4,13 @@ const SIZES = ["Short", "Medium", "Long", "Extra Long"];
 
 const CATEGORIES = [
   {
-    name: "Cuts & Styling",
+    name: "Cuts and Styling",
     services: [
       {
         name: "Trim",
         desc: "A clean finish to remove split ends and maintain your shape.",
         prices: { Short: 195, Medium: 195, Long: 195, "Extra Long": 195 },
-        note: "Wash & blowdry not included.",
+        note: "Wash and blowdry not included.",
       },
       {
         name: "Blowdry",
@@ -229,29 +229,28 @@ export default function App() {
   const [openCat, setOpenCat] = useState(null);
   const [selected, setSelected] = useState({});
 
-  const waBase = `https://wa.me/27717316424?text=`;
-  
-  const waMessage = hasSelected
-    ? `Hi Oayssis, I used the price estimator.%0A%0ALength: ${selectedSize}%0AEstimate: ${formatPrice(total)}%0AServices: ${selectedItems.map((s) => s.name).join(", ")}%0A%0ALooking forward to chatting.`
-    : `Hi Oayssis, I used the price estimator and would like to discuss my visit.%0A%0AHair length: ${selectedSize}%0AServices:%0A${selectedItems.map((s) => `- ${s.name}: ${formatPrice(s.prices[selectedSize])}`).join("%0A")}%0A%0AEstimated total: ${formatPrice(total)}%0A%0ALooking forward to chatting.`
-  : `Hi, I'd like to book an appointment at Oayssis.`;
-
-  const toggleService = (key) => {
-    setSelected((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const selectedItems = CATEGORIES.flatMap((cat) =>
+   const selectedItems = CATEGORIES.flatMap((cat) =>
     cat.services
       .filter((svc) => selected[`${cat.name}__${svc.name}`])
       .map((svc) => ({ ...svc, cat: cat.name }))
   );
 
-  const total = selectedItems.reduce((sum, svc) => {
+   const total = selectedItems.reduce((sum, svc) => {
     const p = svc.prices[selectedSize];
     return sum + (p || 0);
   }, 0);
 
   const hasSelected = selectedItems.length > 0;
+  
+  const waBase = `https://wa.me/27717316424?text=`;
+  
+  const waMessage = hasSelected
+    ? `Hi Oayssis, I used the price estimator and would like to discuss my visit.%0A%0AHair length: ${selectedSize}%0AServices:%0A${selectedItems.map((s) => `- ${s.name}: ${formatPrice(s.prices[selectedSize])}`).join("%0A")}%0A%0AEstimated total: ${formatPrice(total)}%0A%0ALooking forward to chatting.`
+    : `Hi, I'd like to book an appointment at Oayssis.`;
+
+  const toggleService = (key) => {
+    setSelected((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <div style={{ fontFamily: "'Georgia', serif", background: "#FAF8F4", minHeight: "100vh", color: "#2C2416", maxWidth: 480, margin: "0 auto", paddingBottom: hasSelected ? 160 : 100 }}>
