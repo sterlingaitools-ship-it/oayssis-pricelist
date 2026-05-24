@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>We'll Be Right Back — Oayssis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #2C2416;
+      --gold:   #C4A882;
+      --cream:  #FAF8F4;
+      --warm:   #F3EDE4;
+      --muted:  #8A7A65;
+      --mid:    #6A5A45;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Lora', serif;
+      overflow: hidden;
+    }
+
+    /* Subtle animated grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Radial gold glow from centre */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 55% at 50% 48%, rgba(196,168,130,0.13) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    /* Thin decorative lines */
+    .rule {
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      flex-shrink: 0;
+    }
+    .rule-h {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      width: 120px;
+      margin: 0 auto;
+    }
+
+    /* Logo */
+    .logo {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: clamp(28px, 6vw, 42px);
+      letter-spacing: 6px;
+      color: var(--gold);
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.1s forwards;
+    }
+
+    .sub {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.25s forwards;
+    }
+
+    .divider-wrap {
+      margin: 28px 0;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.35s forwards;
+    }
+
+    /* Scissor / maintenance icon */
+    .icon-wrap {
+      margin: 0 auto 24px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.45s forwards;
+    }
+
+    .scissors {
+      width: 48px;
+      height: 48px;
+      stroke: var(--gold);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: snip 3.5s ease-in-out 1.2s infinite;
+      transform-origin: center;
+    }
+
+    @keyframes snip {
+      0%, 100% { transform: rotate(0deg); }
+      20%       { transform: rotate(-18deg); }
+      40%       { transform: rotate(4deg); }
+      60%       { transform: rotate(-8deg); }
+      80%       { transform: rotate(2deg); }
+    }
+
+    .headline {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: clamp(22px, 5vw, 32px);
+      color: var(--cream);
+      line-height: 1.35;
+      max-width: 420px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.55s forwards;
+    }
+
+    .body-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 340px;
+      margin: 18px auto 0;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.7s forwards;
+    }
+
+    .cta-wrap {
+      margin-top: 36px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.85s forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 13px 36px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.25s, color 0.25s;
+      cursor: pointer;
+    }
+
+    .cta-btn:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .wa-link {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .wa-link:hover { color: var(--gold); }
+
+    .footer {
+      position: fixed;
+      bottom: 24px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--mid);
+      opacity: 0;
+      animation: fadeUp 0.9s ease 1.05s forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="logo">OAYSSIS</div>
+    <div class="sub">Hair &amp; Beauty Bar</div>
+
+    <div class="divider-wrap">
+      <div class="rule-h"></div>
+    </div>
+
+    <div class="icon-wrap">
+      <!-- Scissors SVG -->
+      <svg class="scissors" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <!-- top blade -->
+        <path d="M8 8 L38 28" />
+        <circle cx="8" cy="8" r="4" />
+        <!-- bottom blade -->
+        <path d="M8 20 L38 28" />
+        <circle cx="8" cy="20" r="4" />
+        <!-- screw -->
+        <circle cx="26.5" cy="22.5" r="2" />
+      </svg>
+    </div>
+
+    <div class="headline">We're tidying up<br/>behind the scenes.</div>
+
+    <div class="body-text">
+      This page is currently under maintenance.<br/>
+      We'll be back looking our best very soon.
+    </div>
+
+    <div class="cta-wrap">
+      <a class="cta-btn" href="https://oayssis.co.za">Visit Our Main Site</a>
+      <a class="wa-link" href="https://wa.me/27XXXXXXXXX">Or WhatsApp us to book →</a>
+    </div>
+
+  </div>
+
+  <div class="footer">Unit 113, Riverside Lofts · Tyger Falls Blvd, Bellville</div>
+</body>
+</html>
