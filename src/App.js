@@ -220,34 +220,34 @@ const CATEGORIES = [
 ];
 
 const formatPrice = (price) => {
-  if (!price) return "Ask us";
+  if (price === null || price === undefined) return "Ask us";
   return `R${price.toLocaleString("en-ZA")}`;
 };
+
+const waBase = "https://wa.me/27717316424?text=";
 
 export default function App() {
   const [selectedSize, setSelectedSize] = useState("Medium");
   const [openCat, setOpenCat] = useState(null);
   const [selected, setSelected] = useState({});
 
-   const selectedItems = CATEGORIES.flatMap((cat) =>
-    cat.services
-      .filter((svc) => selected[`${cat.name}__${svc.name}`])
-      .map((svc) => ({ ...svc, cat: cat.name }))
-  };
- 
   const selectedItems = CATEGORIES.flatMap((cat) =>
     cat.services
       .filter((svc) => selected[`${cat.name}__${svc.name}`])
       .map((svc) => ({ ...svc, cat: cat.name }))
   );
- 
+
   const total = selectedItems.reduce((sum, svc) => {
     const p = svc.prices[selectedSize];
     return sum + (p || 0);
   }, 0);
- 
+
   const hasSelected = selectedItems.length > 0;
- 
+
+  const toggleService = (key) => {
+    setSelected((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   const waMessage = hasSelected
     ? `Hi Oayssis, I used the price estimator and would like to discuss my visit.%0A%0AHair length: ${selectedSize}%0AServices:%0A${selectedItems.map((s) => `- ${s.name}: ${formatPrice(s.prices[selectedSize])}`).join("%0A")}%0A%0AEstimated total: ${formatPrice(total)}%0A%0ALooking forward to chatting.`
     : `Hi, I'd like to book an appointment at Oayssis.`;
